@@ -1,0 +1,97 @@
+---
+// src/pages/projects/index.astro
+//
+// Страница со списком всех проектов.
+// URL: /projects/
+//
+// Делим проекты по категориям: work / personal.
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+
+// Сортируем по order, потом разделяем на категории
+const sorted = allProjects.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+const workProjects = sorted.filter(p => p.data.category === 'work');
+const personalProjects = sorted.filter(p => p.data.category === 'personal');
+---
+
+<BaseLayout title="Проекты — Дмитрий Гладких">
+  <section class="page-section">
+    <div class="container">
+      <h1>Проекты</h1>
+
+      <h2 class="category-title">Рабочие проекты</h2>
+      <p class="category-lead">
+        Что делаю в Авиаспецтесте — системы компьютерного зрения и измерительное ПО.
+      </p>
+      <div class="projects-grid">
+        {workProjects.map(p => (
+          <ProjectCard
+            slug={p.id}
+            title={p.data.title}
+            description={p.data.description}
+            stack={p.data.stack}
+            status={p.data.status}
+            github={p.data.github}
+            live={p.data.live}
+          />
+        ))}
+      </div>
+
+      <h2 class="category-title">Личные проекты и инфраструктура</h2>
+      <p class="category-lead">
+        Что делаю в свободное время — pet-projects, домашняя инфраструктура, эксперименты.
+      </p>
+      <div class="projects-grid">
+        {personalProjects.map(p => (
+          <ProjectCard
+            slug={p.id}
+            title={p.data.title}
+            description={p.data.description}
+            stack={p.data.stack}
+            status={p.data.status}
+            github={p.data.github}
+            live={p.data.live}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-section {
+    padding: 3rem 0 4rem;
+  }
+
+  .page-section h1 {
+    font-size: 2.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .category-title {
+    font-size: 1.4rem;
+    margin-top: 3rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .category-title:first-of-type {
+    margin-top: 0;
+  }
+
+  .category-lead {
+    color: var(--color-text-dim);
+    margin-bottom: 1.5rem;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+</style>

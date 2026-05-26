@@ -1,0 +1,199 @@
+---
+// src/pages/projects/[slug].astro
+//
+// ДИНАМИЧЕСКАЯ СТРАНИЦА.
+//
+// Квадратные скобки [slug] — это значит "переменная часть URL".
+// Например, файл /src/content/projects/vibration-analysis.md
+// автоматически станет страницей /projects/vibration-analysis/
+//
+// Чтобы Astro знал какие именно страницы генерировать при сборке,
+// нужно экспортировать функцию getStaticPaths().
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+// getStaticPaths возвращает список всех страниц, которые надо сгенерировать.
+// Вызывается ОДИН РАЗ при сборке сайта.
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+
+  return projects.map(project => ({
+    params: { slug: project.id },   // что подставить в [slug]
+    props: { project },              // данные, доступные ниже
+  }));
+}
+
+// Получаем данные конкретного проекта (Astro передаёт через props)
+const { project } = Astro.props;
+
+// render() возвращает компонент <Content />, который рендерит markdown
+const { Content } = await render(project);
+
+// Хелпер для статуса (тот же что в карточке — потом можно вынести в utils)
+const statusLabels: Record<string, string> = {
+  'active': 'Активен',
+  'completed': 'Завершён',
+  'in-progress': 'В работе',
+};
+const statusLabel = project.data.status ? statusLabels[project.data.status] : null;
+---
+
+<BaseLayout title={`${project.data.title} — Дмитрий Гладких`} description={project.data.description}>
+  <article class="project-page">
+    <div class="container">
+      <nav class="breadcrumbs">
+        <a href="/projects/">← Все проекты</a>
+      </nav>
+
+      <header class="project-header">
+        <h1>{project.data.title}</h1>
+        <div class="project-meta">
+          {statusLabel && <span class={`status status-${project.data.status}`}>{statusLabel}</span>}
+          {project.data.year && <span class="year">{project.data.year}</span>}
+        </div>
+
+        <div class="stack-list">
+          {project.data.stack.map(tech => <span class="tech-tag">{tech}</span>)}
+        </div>
+
+        <div class="project-links">
+          {project.data.github && (
+            <a href={project.data.github} target="_blank" rel="noopener" class="link-external">
+              GitHub ↗
+            </a>
+          )}
+          {project.data.live && (
+            <a href={project.data.live} target="_blank" rel="noopener" class="link-external">
+              Live ↗
+            </a>
+          )}
+        </div>
+      </header>
+
+      <div class="project-content">
+        <!-- Здесь рендерится содержимое markdown-файла -->
+        <Content />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .project-page {
+    padding: 2rem 0 4rem;
+  }
+
+  .breadcrumbs {
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .breadcrumbs a {
+    color: var(--color-text-dim);
+  }
+
+  .breadcrumbs a:hover {
+    color: var(--color-accent);
+  }
+
+  .project-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .project-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
+  }
+
+  .project-meta {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .status {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: 20px;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-dim);
+  }
+
+  .status-active,
+  .status-in-progress {
+    color: #3fb950;
+    border-color: #3fb95040;
+  }
+
+  .year {
+    font-family: var(--font-mono);
+    color: var(--color-text-dim);
+    font-size: 0.9rem;
+  }
+
+  .stack-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tech-tag {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--color-text-dim);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+  }
+
+  .project-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  /* Стили для отрендеренного markdown */
+  .project-content :global(h2) {
+    font-size: 1.5rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-content :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .project-content :global(h3) {
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-content :global(p) {
+    margin-bottom: 1rem;
+  }
+
+  .project-content :global(ul),
+  .project-content :global(ol) {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .project-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .project-content :global(strong) {
+    color: #f0f6fc;
+  }
+
+  .project-content :global(pre) {
+    margin: 1.5rem 0;
+  }
+</style>

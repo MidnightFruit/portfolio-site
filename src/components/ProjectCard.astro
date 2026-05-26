@@ -1,0 +1,140 @@
+---
+// src/components/ProjectCard.astro
+//
+// КОМПОНЕНТ — переиспользуемый кусок UI.
+// Карточка одного проекта.
+//
+// Принимает props: title, description, stack, и т.д.
+// Используется на главной и на странице проектов.
+
+interface Props {
+  title: string;
+  description: string;
+  stack: string[];
+  github?: string;
+  live?: string;
+  status?: string;
+  slug: string;
+}
+
+const { title, description, stack, github, live, status, slug } = Astro.props;
+
+// Хелпер: перевод статусов в человекочитаемый вид
+const statusLabels: Record<string, string> = {
+  'active': 'Активен',
+  'completed': 'Завершён',
+  'in-progress': 'В работе',
+};
+const statusLabel = status ? statusLabels[status] || status : null;
+---
+
+<article class="project-card">
+  <header class="card-header">
+    <h3>
+      <a href={`/projects/${slug}/`}>{title}</a>
+    </h3>
+    {statusLabel && <span class={`status status-${status}`}>{statusLabel}</span>}
+  </header>
+
+  <p class="card-description">{description}</p>
+
+  <div class="card-stack">
+    {stack.map(tech => <span class="tech-tag">{tech}</span>)}
+  </div>
+
+  <div class="card-links">
+    <a href={`/projects/${slug}/`} class="link-primary">Подробнее →</a>
+    {github && (
+      <a href={github} target="_blank" rel="noopener" class="link-external">GitHub ↗</a>
+    )}
+    {live && (
+      <a href={live} target="_blank" rel="noopener" class="link-external">Live ↗</a>
+    )}
+  </div>
+</article>
+
+<style>
+  /* Стили компонента изолированы — Astro добавляет уникальные классы автоматически */
+
+  .project-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: border-color 0.15s, transform 0.15s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-card:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-header h3 {
+    font-size: 1.15rem;
+    margin: 0;
+  }
+
+  .card-header h3 a {
+    color: #f0f6fc;
+  }
+
+  .card-header h3 a:hover {
+    color: var(--color-accent);
+  }
+
+  .status {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-dim);
+    white-space: nowrap;
+  }
+
+  .status-active,
+  .status-in-progress {
+    color: #3fb950;
+    border-color: #3fb95040;
+  }
+
+  .card-description {
+    color: var(--color-text-dim);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    flex: 1;
+  }
+
+  .card-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .tech-tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+  }
+
+  .card-links {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+</style>

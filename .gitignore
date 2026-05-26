@@ -1,0 +1,27 @@
+# Зависимости — их не коммитят, восстанавливаются через `npm install`
+node_modules/
+
+# Результат сборки — генерируется автоматически, не коммитим
+dist/
+.astro/
+
+# Локальные настройки редакторов
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Логи
+*.log
+npm-debug.log*
+
+# Переменные окружения (на будущее)
+.env
+.env.local
+.env.production
+
+# Внутренние файлы разработки — не для публичного репозитория
+CLAUDE.md
+CLAUDE_CONTEXT_TEMPLATE.md

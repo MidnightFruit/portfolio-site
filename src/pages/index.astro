@@ -1,0 +1,275 @@
+---
+// src/pages/index.astro
+//
+// ГЛАВНАЯ СТРАНИЦА.
+//
+// В Astro файлы в src/pages/ автоматически становятся URL:
+//   src/pages/index.astro       → /
+//   src/pages/about.astro       → /about/
+//   src/pages/projects/[slug].astro → /projects/что-то/  (динамические)
+//
+// Это файловый роутинг — не нужно настраивать urls.py как в Django.
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+// Получаем все проекты из коллекции
+const allProjects = await getCollection('projects');
+
+// Фильтруем — только featured, сортируем по полю order
+const featuredProjects = allProjects
+  .filter(p => p.data.featured)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+---
+
+<BaseLayout title="Дмитрий Гладких — C++ / Python разработчик">
+
+  <!-- HERO БЛОК -->
+  <section class="hero">
+    <div class="container">
+      <h1>Дмитрий Гладких</h1>
+      <p class="hero-subtitle">
+        <span class="accent">C++ / Python</span> разработчик ·
+        <span class="accent">Computer Vision</span> ·
+        Системы измерений
+      </p>
+      <p class="hero-description">
+        Делаю инженерное ПО, которое работает в производстве: вычислительные библиотеки на C++,
+        системы обработки видеопотока с промышленных камер, измерительные приложения с GUI и REST API.
+      </p>
+      <p class="hero-description">
+        Сейчас — измерения деформаций, вибраций и углов наклона по видео в реальном времени.
+      </p>
+      <div class="hero-actions">
+        <a href="/projects/" class="btn btn-primary">Проекты</a>
+        <a href="https://github.com/MidnightFruit" class="btn btn-secondary" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="/resume.pdf" class="btn btn-secondary">Резюме PDF</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ИЗБРАННЫЕ ПРОЕКТЫ -->
+  <section class="section">
+    <div class="container">
+      <h2>Избранные проекты</h2>
+      <p class="section-lead">
+        Несколько проектов, которые показывают полный цикл — от задачи до результата.
+      </p>
+
+      <div class="projects-grid">
+        {featuredProjects.map(project => (
+          <ProjectCard
+            slug={project.id}
+            title={project.data.title}
+            description={project.data.description}
+            stack={project.data.stack}
+            status={project.data.status}
+            github={project.data.github}
+            live={project.data.live}
+          />
+        ))}
+      </div>
+
+      <p class="section-more">
+        <a href="/projects/">Все проекты →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- СТЕК -->
+  <section class="section section-alt">
+    <div class="container">
+      <h2>Стек</h2>
+
+      <div class="stack-grid">
+        <div class="stack-group">
+          <h3>Languages</h3>
+          <p>Python · C++</p>
+        </div>
+        <div class="stack-group">
+          <h3>Computer Vision</h3>
+          <p>OpenCV · OpenCL · AruCo</p>
+        </div>
+        <div class="stack-group">
+          <h3>Backend</h3>
+          <p>Django · DRF · FastAPI · PostgreSQL · Redis · Celery</p>
+        </div>
+        <div class="stack-group">
+          <h3>Desktop / GUI</h3>
+          <p>PySide6 · multiprocessing</p>
+        </div>
+        <div class="stack-group">
+          <h3>Infrastructure</h3>
+          <p>Linux · Docker · nginx · GitLab CI/CD · WireGuard</p>
+        </div>
+        <div class="stack-group">
+          <h3>Tooling</h3>
+          <p>Git · pytest · Sphinx</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- КОНТАКТЫ -->
+  <section class="section">
+    <div class="container">
+      <h2>Контакты</h2>
+      <p class="section-lead">
+        Открыт к новым задачам в backend, computer vision и инженерной разработке.
+      </p>
+      <ul class="contacts-list">
+        <li><a href="https://t.me/Midnight_Fruit" target="_blank" rel="noopener">Telegram: @Midnight_Fruit</a></li>
+        <li><a href="mailto:dima.gladkikh.2016@mail.ru">Email: dima.gladkikh.2016@mail.ru</a></li>
+        <li><a href="https://github.com/MidnightFruit" target="_blank" rel="noopener">GitHub: MidnightFruit</a></li>
+      </ul>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* === HERO === */
+  .hero {
+    padding: 5rem 0 4rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--color-text-dim);
+    margin-bottom: 1.5rem;
+    font-family: var(--font-mono);
+  }
+
+  .accent {
+    color: var(--color-accent);
+  }
+
+  .hero-description {
+    max-width: 720px;
+    font-size: 1.05rem;
+    color: var(--color-text);
+    margin-bottom: 1rem;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.65rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: 1px solid var(--color-border);
+    transition: all 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: #fff;
+    border-color: var(--color-accent);
+  }
+
+  .btn-primary:hover {
+    background: var(--color-accent-hover);
+    color: #fff;
+  }
+
+  .btn-secondary {
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+
+  /* === SECTIONS === */
+  .section {
+    padding: 4rem 0;
+  }
+
+  .section-alt {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .section h2 {
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-lead {
+    color: var(--color-text-dim);
+    margin-bottom: 2rem;
+    max-width: 720px;
+  }
+
+  .section-more {
+    margin-top: 2rem;
+  }
+
+  /* === PROJECTS GRID === */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* === STACK === */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem 2rem;
+  }
+
+  .stack-group h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-dim);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+
+  .stack-group p {
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+  }
+
+  /* === CONTACTS === */
+  .contacts-list {
+    list-style: none;
+    margin-top: 1rem;
+  }
+
+  .contacts-list li {
+    margin-bottom: 0.6rem;
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 640px) {
+    .hero h1 {
+      font-size: 2.25rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+  }
+</style>
