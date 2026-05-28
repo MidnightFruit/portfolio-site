@@ -196,4 +196,47 @@ const statusLabel = project.data.status ? statusLabels[project.data.status] : nu
   .project-content :global(pre) {
     margin: 1.5rem 0;
   }
+
+  .project-content :global(.contains-task-list) {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .project-content :global(.task-list-item) {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-content :global(.task-list-item input[type="checkbox"]) {
+    appearance: none;
+    -webkit-appearance: none;
+    flex-shrink: 0;
+    width: 1.15rem;
+    height: 1.15rem;
+    border: 1.5px solid var(--color-border);
+    border-radius: 3px;
+    background: var(--color-bg);
+    position: relative;
+    cursor: default;
+  }
+
+  .project-content :global(.task-list-item input[type="checkbox"]:checked) {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .project-content :global(.task-list-item input[type="checkbox"]:checked::after) {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    width: 5px;
+    height: 9px;
+    border: 1.5px solid #fff;
+    border-top: none;
+    border-left: none;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
 </style>
