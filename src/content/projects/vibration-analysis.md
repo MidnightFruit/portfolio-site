@@ -2,8 +2,8 @@
 title: "Система анализа вибраций"
 description: "Бесконтактное измерение амплитуды и частоты колебаний по видеопотоку. До 80 измерений/сек на каждый маркер"
 category: "work"
-stack: ["Python", "PySide6", "OpenCV", "AruCo", "multiprocessing", "UDP"]
-year: 2024
+stack: ["Python", "PySide6", "OpenCV", "AruCo", "multiprocessing", "UDP", "PyQtGraph"]
+year: 2026
 status: "completed"
 featured: true
 order: 1
