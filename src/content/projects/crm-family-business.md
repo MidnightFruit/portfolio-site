@@ -3,7 +3,7 @@ title: "CRM для семейного бизнеса"
 description: "Веб-приложение для клиентов, заказов и финансов. Django + PostgreSQL, развёрнуто с собственным CI/CD"
 category: "personal"
 stack: ["Django", "PostgreSQL", "Docker", "docker-compose", "nginx", "GitLab CI/CD"]
-year: 2025
+year: 2026
 status: "in-progress"
 featured: true
 order: 2
