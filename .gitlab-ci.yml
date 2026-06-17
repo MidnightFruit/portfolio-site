@@ -17,14 +17,15 @@ build:
 
 deploy:
   stage: deploy
+  image: ubuntu:22.04
   script:
-    - apt-get update -qq && apt-get install -y -qq rsync
+    - apt-get update -qq && apt-get install -y -qq rsync openssh-client
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
     - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
     - rsync -avz --delete dist/ $DEPLOY_USER@$DEPLOY_HOST:/var/www/portfolio/
-    - ssh $DEPLOY_USER@$DEPLOY_HOST "sudo chown -R www-data:www-data /var/www/portfolio"
+    - ssh -i ~/.ssh/id_rsa $DEPLOY_USER@$DEPLOY_HOST "sudo chown -R www-data:www-data /var/www/portfolio"
   only:
     - main
   needs:
