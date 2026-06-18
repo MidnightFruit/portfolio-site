@@ -23,9 +23,6 @@ deploy:
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
     - chmod 600 "$SSH_PRIVATE_KEY_PORTFOLIO"
-    - cat "$SSH_PRIVATE_KEY_PORTFOLIO" | head -3
-    - wc -l "$SSH_PRIVATE_KEY_PORTFOLIO"
-    - file "$SSH_PRIVATE_KEY_PORTFOLIO"
     - echo "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
     - rsync -avz --delete
