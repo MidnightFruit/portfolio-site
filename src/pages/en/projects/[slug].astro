@@ -1,0 +1,53 @@
+---
+// src/pages/en/projects/[slug].astro
+//
+// Английская страница отдельного проекта.
+// URL: /en/projects/<slug>/
+//
+// Английский аналог src/pages/projects/[slug].astro. Контент берётся из
+// ОТДЕЛЬНОЙ английской коллекции 'projects-en' (src/content/projects-en/*.md),
+// объявленной в src/content.config.ts. Workflow добавления тот же, что у RU:
+// создаёшь markdown с тем же slug — страница появляется автоматически.
+//
+// Разметку/стили карточки проекта копируй из RU-версии [slug].astro —
+// здесь оставлен минимальный каркас.
+
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects-en');
+  return projects.map(project => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const statusLabels: Record<string, string> = {
+  'active': 'Active',
+  'completed': 'Completed',
+  'in-progress': 'In progress',
+};
+const statusLabel = project.data.status ? statusLabels[project.data.status] : null;
+---
+
+<BaseLayout lang="en" title={`${project.data.title} — Dmitry Gladkikh`} description={project.data.description}>
+  <article class="container" style="padding: 2rem 0 4rem;">
+    <nav style="margin-bottom: 2rem;">
+      <a href="/en/projects/">← All projects</a>
+    </nav>
+
+    <header>
+      <h1>{project.data.title}</h1>
+      {statusLabel && <span>{statusLabel}</span>}
+      {/* TODO: stack tags, GitHub / Live links — mirror RU [slug].astro markup */}
+    </header>
+
+    <div class="project-content">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>

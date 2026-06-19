@@ -1,0 +1,33 @@
+---
+// src/pages/en/projects/index.astro
+//
+// Английский список проектов. URL: /en/projects/
+// Английский аналог src/pages/projects/index.astro: данные берём из
+// коллекции 'projects-en', делим на work / personal так же, как в RU.
+//
+// ЧТО ЗАПОЛНИТЬ:
+//   1. Сетку карточек (<ProjectCard ... />) — скопируй разметку из RU-версии.
+//      Ссылки карточек должны вести на /en/projects/<slug>/.
+//   2. Lead-абзацы под заголовками разделов — перевести.
+//   3. Стили скопировать из блока <style> RU-версии.
+
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects-en');
+const sorted = allProjects.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+const workProjects = sorted.filter(p => p.data.category === 'work');
+const personalProjects = sorted.filter(p => p.data.category === 'personal');
+---
+
+<BaseLayout lang="en" title="Projects — Dmitry Gladkikh">
+  <section class="container" style="padding: 3rem 0 4rem;">
+    <h1>Projects</h1>
+
+    <h2>Work projects</h2>
+    {/* TODO: lead paragraph + cards grid for workProjects (mirror RU) */}
+
+    <h2>Personal projects &amp; infrastructure</h2>
+    {/* TODO: lead paragraph + cards grid for personalProjects (mirror RU) */}
+  </section>
+</BaseLayout>

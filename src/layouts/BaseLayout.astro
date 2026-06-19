@@ -17,14 +17,59 @@
 interface Props {
   title: string;
   description?: string;
+  lang?: "ru" | "en";
 }
 
-const { title, description = "Дмитрий Гладких — C++ / Python разработчик. Computer Vision и системы измерений." } = Astro.props;
+const { title, description = "Дмитрий Гладких — C++ / Python разработчик. Computer Vision и системы измерений.", lang } = Astro.props;
+
+// Определяем язык страницы по её пути: всё под /en/ — английская версия.
+// Можно переопределить явным props lang.
+const pathname = Astro.url.pathname;
+const isEn = lang ? lang === "en" : (pathname === "/en" || pathname.startsWith("/en/"));
+const currentLang = isEn ? "en" : "ru";
+
+// Префикс для внутренних ссылок: на английской версии все ссылки в хедере
+// должны вести на /en/..., иначе клик по логотипу/меню уводит на русскую
+// версию (а после осознанного выбора языка редирект уже не вернёт обратно).
+const base = isEn ? "/en" : "";
+
+// Подписи навигации — на текущем языке.
+const nav = isEn
+  ? { home: "Home", projects: "Projects", about: "About" }
+  : { home: "Главная", projects: "Проекты", about: "Обо мне" };
+
+// Имя в логотипе — на текущем языке (на английской версии транслитерация).
+const siteName = isEn ? "Dmitry Gladkikh" : "Дмитрий Гладких";
 ---
 
 <!doctype html>
-<html lang="ru">
+<html lang={currentLang}>
   <head>
+    <!--
+      Автоопределение языка браузера (сайт статический, без SSR).
+      Скрипт стоит первым в <head> и блокирующий — выполняется до отрисовки,
+      чтобы не было мигания русской версии перед редиректом.
+      Логика: если пользователь ещё НЕ делал осознанный выбор языка
+      (нет ключа lang-preference в localStorage), мы на русской версии,
+      а язык браузера не русский — уводим на /en/ текущей страницы.
+    -->
+    <script is:inline>
+      (function () {
+        try {
+          var pref = localStorage.getItem("lang-preference");
+          if (pref) return; // осознанный выбор уже сделан — не вмешиваемся
+          var path = location.pathname;
+          var isEn = path === "/en" || path.indexOf("/en/") === 0;
+          if (isEn) return; // уже на английской версии
+          var lang = (navigator.language || "").toLowerCase();
+          if (lang && lang.indexOf("ru") !== 0) {
+            location.replace("/en" + (path === "/" ? "/" : path));
+          }
+        } catch (e) {
+          /* localStorage может быть недоступен — тихо игнорируем */
+        }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -34,14 +79,48 @@ const { title, description = "Дмитрий Гладких — C++ / Python р�
   <body>
     <header class="site-header">
       <div class="container">
-        <a href="/" class="logo">Дмитрий Гладких</a>
+        <a href={`${base}/`} class="logo">{siteName}</a>
         <nav class="site-nav">
-          <a href="/">Главная</a>
-          <a href="/projects/">Проекты</a>
-          <a href="/about/">Обо мне</a>
+          <a href={`${base}/`}>{nav.home}</a>
+          <a href={`${base}/projects/`}>{nav.projects}</a>
+          <a href={`${base}/about/`}>{nav.about}</a>
+          <div class="lang-switcher">
+            <button type="button" data-lang="ru" class:list={["lang-btn", { active: currentLang === "ru" }]}>RU</button>
+            <button type="button" data-lang="en" class:list={["lang-btn", { active: currentLang === "en" }]}>EN</button>
+          </div>
         </nav>
       </div>
     </header>
+
+    <!--
+      Переключатель языка. Записывает осознанный выбор в тот же ключ
+      lang-preference, поэтому авторедирект по navigator.language больше
+      не сработает, и переводит на соответствующую версию текущей страницы.
+    -->
+    <script is:inline>
+      (function () {
+        // Приводим путь к русскому (базовому) виду: убираем префикс /en.
+        function toBasePath(path) {
+          if (path === "/en" || path === "/en/") return "/";
+          if (path.indexOf("/en/") === 0) return path.slice(3);
+          return path;
+        }
+        var buttons = document.querySelectorAll(".lang-btn");
+        for (var i = 0; i < buttons.length; i++) {
+          buttons[i].addEventListener("click", function () {
+            var lang = this.getAttribute("data-lang");
+            try {
+              localStorage.setItem("lang-preference", lang);
+            } catch (e) {}
+            var base = toBasePath(location.pathname);
+            var target = lang === "en" ? "/en" + (base === "/" ? "/" : base) : base;
+            if (target !== location.pathname) {
+              location.href = target;
+            }
+          });
+        }
+      })();
+    </script>
 
     <main>
       <!-- Сюда вставится содержимое конкретной страницы -->
@@ -176,6 +255,34 @@ const { title, description = "Дмитрий Гладких — C++ / Python р�
 
       .site-nav a:hover {
         color: var(--color-text);
+      }
+
+      /* === ПЕРЕКЛЮЧАТЕЛЬ ЯЗЫКА === */
+      .lang-switcher {
+        display: flex;
+        gap: 0.25rem;
+        align-items: center;
+      }
+
+      .lang-btn {
+        font-family: var(--font-sans);
+        font-size: 0.85rem;
+        color: var(--color-text-dim);
+        background: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        padding: 0.15rem 0.4rem;
+        cursor: pointer;
+        transition: color 0.15s, border-color 0.15s;
+      }
+
+      .lang-btn:hover {
+        color: var(--color-text);
+      }
+
+      .lang-btn.active {
+        color: var(--color-accent);
+        border-color: var(--color-border);
       }
 
       /* === FOOTER === */

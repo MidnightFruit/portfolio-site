@@ -16,28 +16,37 @@ import { glob } from 'astro/loaders';
 // z.string().optional() = "поле необязательное"
 // z.array(z.string()) = "массив строк"
 
-const projects = defineCollection({
-  // loader говорит Astro где искать файлы коллекции
-  loader: glob({
-    pattern: '**/*.md',          // все .md файлы
-    base: './src/content/projects' // в этой папке
-  }),
-  schema: z.object({
-    // Обязательные поля каждого проекта:
-    title: z.string(),
-    description: z.string(),     // короткое описание для карточки
-    category: z.enum(['work', 'personal']), // рабочий или личный проект
-    stack: z.array(z.string()),  // список технологий
+// Схема одна на оба языка — поля проекта одинаковые, отличается только язык
+// текстов (title/description + сам markdown). Выносим её, чтобы не дублировать.
+const projectSchema = z.object({
+  // Обязательные поля каждого проекта:
+  title: z.string(),
+  description: z.string(),     // короткое описание для карточки
+  category: z.enum(['work', 'personal']), // рабочий или личный проект
+  stack: z.array(z.string()),  // список технологий
 
-    // Опциональные поля:
-    year: z.number().optional(),
-    status: z.enum(['active', 'completed', 'in-progress']).optional(),
-    github: z.string().url().optional(),     // ссылка на GitHub (если есть)
-    live: z.string().url().optional(),       // ссылка на работающий сайт (если есть)
-    featured: z.boolean().optional().default(false), // показывать на главной?
-    order: z.number().optional().default(99), // порядок сортировки (меньше = выше)
-  }),
+  // Опциональные поля:
+  year: z.number().optional(),
+  status: z.enum(['active', 'completed', 'in-progress']).optional(),
+  github: z.string().url().optional(),     // ссылка на GitHub (если есть)
+  live: z.string().url().optional(),       // ссылка на работающий сайт (если есть)
+  featured: z.boolean().optional().default(false), // показывать на главной?
+  order: z.number().optional().default(99), // порядок сортировки (меньше = выше)
 });
 
-// Экспортируем все коллекции (у нас пока одна)
-export const collections = { projects };
+// Русские проекты — src/content/projects/*.md
+const projects = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+  schema: projectSchema,
+});
+
+// Английские проекты — src/content/projects-en/*.md
+// Важно: slug (имя файла) должен совпадать с русской версией, тогда страницы
+// /projects/<slug>/ и /en/projects/<slug>/ ссылаются на один и тот же проект.
+const projectsEn = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/projects-en' }),
+  schema: projectSchema,
+});
+
+// Экспортируем все коллекции. Ключ 'projects-en' и используется в getCollection().
+export const collections = { projects, 'projects-en': projectsEn };

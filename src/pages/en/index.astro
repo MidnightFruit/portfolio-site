@@ -1,0 +1,41 @@
+---
+// src/pages/en/index.astro
+//
+// ЗАГЛУШКА английской ГЛАВНОЙ страницы.
+// URL: /en/
+//
+// Это английский аналог src/pages/index.astro.
+// Структуру (hero / проекты / стек / контакты) копируй оттуда —
+// здесь оставлен минимальный каркас, чтобы сайт собирался и редирект
+// на /en/ не упирался в 404.
+//
+// ВАЖНО: передаём lang="en" в BaseLayout — тогда <html lang="en">,
+// кнопка EN в хедере подсветится активной, и авторедирект сюда не сработает.
+//
+// ЧТО ЗАПОЛНИТЬ:
+//   1. Hero: имя, подзаголовок (роль), 1–2 абзаца описания — на английском.
+//   2. Featured-проекты: данные тянутся из английской коллекции 'projects-en'
+//      (как в RU-версии из 'projects'). Осталось добавить разметку сетки карточек.
+//   3. Блок «Stack» и «Contacts» — перевести подписи.
+//   4. Стили можно скопировать из src/pages/index.astro (блок <style>).
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects-en');
+const featuredProjects = allProjects
+  .filter(p => p.data.featured)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+---
+
+<BaseLayout lang="en" title="Dmitry Gladkikh — C++ / Python developer">
+  <section class="container" style="padding: 4rem 0;">
+    <h1>Dmitry Gladkikh</h1>
+    {/* TODO: hero subtitle, description, action buttons (Projects / GitHub / Resume) */}
+    <p>{/* TODO: short intro in English */}</p>
+
+    {/* TODO: featured projects grid over featuredProjects (mirror src/pages/index.astro) */}
+    {/* TODO: Stack section */}
+    {/* TODO: Contacts section */}
+  </section>
+</BaseLayout>

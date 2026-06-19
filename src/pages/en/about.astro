@@ -1,0 +1,31 @@
+---
+// src/pages/en/about.astro
+//
+// ЗАГЛУШКА английской страницы «Обо мне».
+// URL: /en/about/
+//
+// Английский аналог src/pages/about.astro — перенеси оттуда структуру
+// разделов и переведи текст. Стили можно скопировать из блока <style>
+// того же файла.
+//
+// ЧТО ЗАПОЛНИТЬ (заголовки разделов из RU-версии):
+//   - Lead-абзац (кто я, где, формат работы).
+//   - «How I got here» (Как я сюда пришёл)
+//   - «What I'm interested in» (Что мне интересно)
+//   - «What I'm looking for» (Что я ищу)
+//   - Ссылки на Telegram / email в конце.
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout lang="en" title="About — Dmitry Gladkikh">
+  <article class="container" style="max-width: 720px; padding: 3rem 0 5rem;">
+    <h1>About</h1>
+    <p>{/* TODO: lead paragraph in English */}</p>
+
+    {/* TODO: section "How I got here" */}
+    {/* TODO: section "What I'm interested in" */}
+    {/* TODO: section "What I'm looking for" */}
+    {/* TODO: contact links (Telegram / email) */}
+  </article>
+</BaseLayout>
