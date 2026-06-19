@@ -55,7 +55,8 @@ const siteName = isEn ? "Dmitry Gladkikh" : "Дмитрий Гладких";
       (нет ключа lang-preference в localStorage), мы на русской версии,
       а язык браузера не русский — уводим на /en/ текущей страницы.
     -->
-    <script is:inline>
+    <!-- LANG_REDIRECT_HIDDEN: убрать комментарии вокруг script чтобы вернуть авторедирект -->
+    <!-- <script is:inline>
       (function () {
         try {
           var pref = localStorage.getItem("lang-preference");
@@ -71,7 +72,7 @@ const siteName = isEn ? "Dmitry Gladkikh" : "Дмитрий Гладких";
           /* localStorage может быть недоступен — тихо игнорируем */
         }
       })();
-    </script>
+    </script> -->
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -86,10 +87,11 @@ const siteName = isEn ? "Dmitry Gladkikh" : "Дмитрий Гладких";
           <a href={`${base}/`}>{nav.home}</a>
           <a href={`${base}/projects/`}>{nav.projects}</a>
           <a href={`${base}/about/`}>{nav.about}</a>
-          <div class="lang-switcher">
+          {/* LANG_SWITCHER_HIDDEN: убрать комментарий чтобы показать переключатель */}
+          {/* <div class="lang-switcher">
             <button type="button" data-lang="ru" class:list={["lang-btn", { active: currentLang === "ru" }]}>RU</button>
             <button type="button" data-lang="en" class:list={["lang-btn", { active: currentLang === "en" }]}>EN</button>
-          </div>
+          </div> */}
         </nav>
       </div>
     </header>
