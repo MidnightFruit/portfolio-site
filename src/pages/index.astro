@@ -13,6 +13,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
+// Стили hero/btn/section/stack/contacts — в global.css (подключён через BaseLayout)
 
 // Получаем все проекты из коллекции
 const allProjects = await getCollection('projects');
@@ -41,8 +42,8 @@ const featuredProjects = allProjects
       </p>
       <p class="hero-description">
         Пишу на C++ и Python и выбираю инструмент под задачу: C++ - для производительных
-        вычислительных библиотек, Python - для прикладных систем и вычислений, где важнее
-        скорость разработки.
+        вычислительных библиотек, Python - для прикладных систем, обработки данных и
+        измерительных алгоритмов.
       </p>
       <p class="hero-description">
         Одинаково комфортно работаю и с вычислительными, инженерными задачами,
@@ -62,7 +63,7 @@ const featuredProjects = allProjects
     <div class="container">
       <h2>Избранные проекты</h2>
       <p class="section-lead">
-        Несколько проектов, которые показывают полный цикл — от задачи до результата.
+        Несколько проектов, которые показывают полный цикл - от задачи до результата.
       </p>
 
       <div class="projects-grid">
@@ -135,149 +136,3 @@ const featuredProjects = allProjects
   </section>
 
 </BaseLayout>
-
-<style>
-  /* === HERO === */
-  .hero {
-    padding: 5rem 0 4rem;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .hero h1 {
-    font-size: 3rem;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.02em;
-  }
-
-  .hero-subtitle {
-    font-size: 1.2rem;
-    color: var(--color-text-dim);
-    margin-bottom: 1.5rem;
-    font-family: var(--font-mono);
-  }
-
-  .accent {
-    color: var(--color-accent);
-  }
-
-  .hero-description {
-    max-width: 720px;
-    font-size: 1.05rem;
-    color: var(--color-text);
-    margin-bottom: 1rem;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 2rem;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    display: inline-block;
-    padding: 0.65rem 1.25rem;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    border: 1px solid var(--color-border);
-    transition: all 0.15s;
-  }
-
-  .btn-primary {
-    background: var(--color-accent);
-    color: #fff;
-    border-color: var(--color-accent);
-  }
-
-  .btn-primary:hover {
-    background: var(--color-accent-hover);
-    color: #fff;
-  }
-
-  .btn-secondary {
-    background: var(--color-surface);
-    color: var(--color-text);
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-  }
-
-  /* === SECTIONS === */
-  .section {
-    padding: 4rem 0;
-  }
-
-  .section-alt {
-    background: var(--color-surface);
-    border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .section h2 {
-    font-size: 1.75rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .section-lead {
-    color: var(--color-text-dim);
-    margin-bottom: 2rem;
-    max-width: 720px;
-  }
-
-  .section-more {
-    margin-top: 2rem;
-  }
-
-  /* === PROJECTS GRID === */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 1.5rem;
-  }
-
-  /* === STACK === */
-  .stack-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem 2rem;
-  }
-
-  .stack-group h3 {
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text-dim);
-    margin-bottom: 0.4rem;
-    font-weight: 500;
-  }
-
-  .stack-group p {
-    color: var(--color-text);
-    font-family: var(--font-mono);
-    font-size: 0.95rem;
-  }
-
-  /* === CONTACTS === */
-  .contacts-list {
-    list-style: none;
-    margin-top: 1rem;
-  }
-
-  .contacts-list li {
-    margin-bottom: 0.6rem;
-  }
-
-  /* === RESPONSIVE === */
-  @media (max-width: 640px) {
-    .hero h1 {
-      font-size: 2.25rem;
-    }
-
-    .hero-subtitle {
-      font-size: 1rem;
-    }
-  }
-</style>

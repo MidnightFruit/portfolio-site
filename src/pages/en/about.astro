@@ -1,31 +1,54 @@
 ---
 // src/pages/en/about.astro
-//
-// ЗАГЛУШКА английской страницы «Обо мне».
 // URL: /en/about/
-//
-// Английский аналог src/pages/about.astro — перенеси оттуда структуру
-// разделов и переведи текст. Стили можно скопировать из блока <style>
-// того же файла.
-//
-// ЧТО ЗАПОЛНИТЬ (заголовки разделов из RU-версии):
-//   - Lead-абзац (кто я, где, формат работы).
-//   - «How I got here» (Как я сюда пришёл)
-//   - «What I'm interested in» (Что мне интересно)
-//   - «What I'm looking for» (Что я ищу)
-//   - Ссылки на Telegram / email в конце.
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/about.css';
 ---
 
 <BaseLayout lang="en" title="About — Dmitry Gladkikh">
-  <article class="container" style="max-width: 720px; padding: 3rem 0 5rem;">
-    <h1>About</h1>
-    <p>{/* TODO: lead paragraph in English */}</p>
+  <article class="about">
+    <div class="container narrow">
+      <h1>About</h1>
 
-    {/* TODO: section "How I got here" */}
-    {/* TODO: section "What I'm interested in" */}
-    {/* TODO: section "What I'm looking for" */}
-    {/* TODO: contact links (Telegram / email) */}
+      <p class="lead">
+        C++ / Python developer, 3 years of experience in computer vision and engineering software.
+        Based in Novosibirsk, open to remote, hybrid, and relocation.
+      </p>
+
+      <h2>How I got here</h2>
+      <p>
+        Started with C++ at university — simple console programs, basic algorithms.
+        After graduating I took courses in Python and backend development (Django, DRF, PostgreSQL,
+        Celery, Redis), then joined Aviaspetstest, where I still work.
+      </p>
+      <p>
+        Over three years I went from early template-matching tasks to designing full measurement
+        systems — from low-level camera work to GUI and REST API.
+      </p>
+
+      <h2>What I'm interested in</h2>
+      <p>
+        Tasks at the intersection of code and physics: image processing algorithms, working with
+        industrial hardware, optimizing for real FPS and memory constraints. When measurements
+        from your code are used on a test bench and the outcome depends on it — that's the best
+        feedback a developer can get.
+      </p>
+      <p>
+        Outside work I maintain my own infrastructure: a home GitLab on a mini-PC, VPN access
+        via WireGuard, a CI/CD pipeline to production servers. My personal projects run on this —
+        a CRM for the family business, a utility Telegram bot, experiments.
+      </p>
+
+      <h2>What I'm looking for</h2>
+      <p>
+        Long-term projects where I can influence product quality. Backend, computer vision,
+        systems software — anything with a real engineering problem, not just shuffling JSON.
+      </p>
+      <p>
+        Happy to talk — write on <a href="https://t.me/Midnight_Fruit">Telegram</a>
+        or by <a href="mailto:dima.gladkikh.2016@mail.ru">email</a>.
+      </p>
+    </div>
   </article>
 </BaseLayout>

@@ -15,23 +15,27 @@ interface Props {
   live?: string;
   status?: string;
   slug: string;
+  lang?: 'ru' | 'en';
 }
 
-const { title, description, stack, github, live, status, slug } = Astro.props;
+const { title, description, stack, github, live, status, slug, lang = 'ru' } = Astro.props;
 
-// Хелпер: перевод статусов в человекочитаемый вид
-const statusLabels: Record<string, string> = {
-  'active': 'Активен',
-  'completed': 'Завершён',
-  'in-progress': 'В работе',
+const isEn = lang === 'en';
+const projectUrl = isEn ? `/en/projects/${slug}/` : `/projects/${slug}/`;
+const moreLabel = isEn ? 'Details →' : 'Подробнее →';
+
+const statusLabels: Record<string, { ru: string; en: string }> = {
+  'active':      { ru: 'Активен',   en: 'Active' },
+  'completed':   { ru: 'Завершён',  en: 'Completed' },
+  'in-progress': { ru: 'В работе',  en: 'In progress' },
 };
-const statusLabel = status ? statusLabels[status] || status : null;
+const statusLabel = status ? (statusLabels[status]?.[lang] ?? status) : null;
 ---
 
 <article class="project-card">
   <header class="card-header">
     <h3>
-      <a href={`/projects/${slug}/`}>{title}</a>
+      <a href={projectUrl}>{title}</a>
     </h3>
     {statusLabel && <span class={`status status-${status}`}>{statusLabel}</span>}
   </header>
@@ -43,7 +47,7 @@ const statusLabel = status ? statusLabels[status] || status : null;
   </div>
 
   <div class="card-links">
-    <a href={`/projects/${slug}/`} class="link-primary">Подробнее →</a>
+    <a href={projectUrl} class="link-primary">{moreLabel}</a>
     {github && (
       <a href={github} target="_blank" rel="noopener" class="link-external">GitHub ↗</a>
     )}
