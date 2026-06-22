@@ -1,7 +1,6 @@
 ---
-# Английская версия проекта. Slug совпадает с src/content/projects/home-infrastructure.md
-title: "TODO: English title"
-description: "TODO: English short description for the card"
+title: "Home infrastructure and self-hosted CI/CD"
+description: "GitLab CE on mini-PC"
 category: "personal"
 stack: ["Arch Linux", "Docker", "GitLab CE", "WireGuard", "PostgreSQL", "nginx"]
 status: "active"
