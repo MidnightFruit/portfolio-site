@@ -1,9 +1,7 @@
 ---
-# Английская версия проекта. Slug файла совпадает с src/content/projects/camera-platform.md
-# Структурные поля (category / stack / year / status / featured / order) переводить не нужно —
-# скопированы из русской версии. Переведи только title, description и текст ниже.
-title: "Camera control platform"
-description: "Expanding platform data collection from cameras: united interface for different SDK and synchrone capture"
+# Slug совпадает с русской версией: camera-platform.md
+title: "Industrial Camera Control Platform"
+description: "Extensible data-acquisition platform for cameras: a unified interface across different SDKs and synchronized capture from multiple cameras"
 category: "work"
 stack: ["Python", "PySide6", "multiprocessing", "OpenCV", "FastAPI", "UDP"]
 year: 2025
@@ -12,12 +10,13 @@ featured: true
 order: 0
 ---
 
-## Task
+## The task
 
 We needed a foundation for working with industrial cameras that different measurement
 applications could be built on. The key requirements: support for cameras from different
-vendors, synchronized frame capture from several cameras at once, and the ability to run
-both with a GUI and headless on a server.
+vendors, synchronized frame capture from several cameras at once, and control through a GUI,
+CLI, or external API - so the program could run both as a desktop application and headless
+on a server.
 
 ## My role
 
@@ -26,14 +25,14 @@ The structural decisions - splitting it into a core, interfaces, and a proxy lay
 choosing processes for synchronized capture - were mine. In parallel, the team worked on the
 computational solver that consumes the platform's data.
 
-It started as a standalone camera-control program. Over time it became the foundation the
-other projects are built on - vibration analysis and angle measurement.
+It started as a standalone camera-control program. Over time it became the foundation for the
+other projects - vibration analysis and angle measurement.
 
-## Architectural decisions 
+## Architectural decisions
 
-**A proxy layer behind a single 'ICam' interface.**
-To add a camera from a new vendor, you only implement the 'ICam' interface methods - the core
-stays untouched. Right now this mechanism integrates webcams (the standard OpenCV drivers) and
+**A proxy layer behind a single `ICam` interface.**
+To add a camera from a new vendor, you only implement the `ICam` interface methods - the core
+stays untouched. Right now this mechanism integrates webcams (the standard OpenCV driver) and
 Daheng industrial cameras (their shared vendor SDK). A new SDK plugs in the same way.
 
 **Processes instead of threads for capture.**
