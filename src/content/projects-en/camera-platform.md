@@ -49,7 +49,7 @@ or headless on a server.
 
 ## Architecture
 
-<img src="/diagrams/camera-platform-architecture.svg" alt="Platform architecture: core, interfaces, proxy layer for camera SDKs, and child processes" style="width:100%;max-width:900px;display:block;margin:1.5rem auto">
+<img src="/diagrams-en/camera-platform-architecture.en.svg" alt="Platform architecture: core, interfaces, proxy layer for camera SDKs, and child processes" style="width:100%;max-width:900px;display:block;margin:1.5rem auto">
 
 ## Current state
 
