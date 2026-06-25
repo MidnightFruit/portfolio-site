@@ -55,8 +55,7 @@ const siteName = isEn ? "Dmitry Gladkikh" : "Дмитрий Гладких";
       (нет ключа lang-preference в localStorage), мы на русской версии,
       а язык браузера не русский — уводим на /en/ текущей страницы.
     -->
-    <!-- LANG_REDIRECT_HIDDEN: убрать комментарии вокруг script чтобы вернуть авторедирект -->
-    <!-- <script is:inline>
+    <script is:inline>
       (function () {
         try {
           var pref = localStorage.getItem("lang-preference");
@@ -72,7 +71,7 @@ const siteName = isEn ? "Dmitry Gladkikh" : "Дмитрий Гладких";
           /* localStorage может быть недоступен — тихо игнорируем */
         }
       })();
-    </script> -->
+    </script>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
