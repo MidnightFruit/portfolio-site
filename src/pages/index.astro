@@ -8,24 +8,24 @@
 //   src/pages/about.astro       → /about/
 //   src/pages/projects/[slug].astro → /projects/что-то/  (динамические)
 //
-// Это файловый роутинг — не нужно настраивать urls.py как в Django.
+// Это файловый роутинг - не нужно настраивать urls.py как в Django.
 
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
-// Стили hero/btn/section/stack/contacts — в global.css (подключён через BaseLayout)
+// Стили hero/btn/section/stack/contacts - в global.css (подключён через BaseLayout)
 
 // Получаем все проекты из коллекции
 const allProjects = await getCollection('projects');
 
-// Фильтруем — только featured, сортируем по полю order
+// Фильтруем - только featured, сортируем по полю order
 const featuredProjects = allProjects
   .filter(p => p.data.featured)
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 ---
 
 <BaseLayout
-  title="Дмитрий Гладких — C++ / Python разработчик"
+  title="Дмитрий Гладких - C++ / Python разработчик"
   description="C++ / Python разработчик: инженерное ПО, системы компьютерного зрения и измерений. Избранные проекты, стек и контакты."
 >
 

@@ -3,7 +3,7 @@
 //
 // ДИНАМИЧЕСКАЯ СТРАНИЦА.
 //
-// Квадратные скобки [slug] — это значит "переменная часть URL".
+// Квадратные скобки [slug] - это значит "переменная часть URL".
 // Например, файл /src/content/projects/vibration-analysis.md
 // автоматически станет страницей /projects/vibration-analysis/
 //
@@ -31,7 +31,7 @@ const { project } = Astro.props;
 // render() возвращает компонент <Content />, который рендерит markdown
 const { Content } = await render(project);
 
-// Хелпер для статуса (тот же что в карточке — потом можно вынести в utils)
+// Хелпер для статуса (тот же что в карточке - потом можно вынести в utils)
 const statusLabels: Record<string, string> = {
   'active': 'Активен',
   'completed': 'Завершён',
@@ -40,7 +40,7 @@ const statusLabels: Record<string, string> = {
 const statusLabel = project.data.status ? statusLabels[project.data.status] : null;
 ---
 
-<BaseLayout title={`${project.data.title} — Дмитрий Гладких`} description={project.data.description}>
+<BaseLayout title={`${project.data.title} - Дмитрий Гладких`} description={project.data.description}>
   <article class="project-page">
     <div class="container">
       <nav class="breadcrumbs">
