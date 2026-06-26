@@ -1,6 +1,8 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
+import sitemap from '@astrojs/sitemap';
+
 // Это главный конфиг Astro. Тут можно задавать:
 // - site: финальный URL сайта (нужно для генерации правильных ссылок и sitemap)
 // - output: 'static' (по умолчанию) или 'server'. Мы делаем статику.
@@ -9,6 +11,8 @@ import { defineConfig } from 'astro/config';
 // Пока конфиг минимальный. Когда у тебя будет реальный домен — пропиши его в site.
 
 export default defineConfig({
-  site: 'https://example.com', // ЗАМЕНИ на свой реальный домен когда будешь деплоить
+  site: 'https://gladkih.xyz',
+
   output: 'static',
+  integrations: [sitemap()],
 });

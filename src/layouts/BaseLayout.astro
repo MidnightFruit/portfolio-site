@@ -22,13 +22,26 @@ interface Props {
   lang?: "ru" | "en";
 }
 
-const { title, description = "Дмитрий Гладких — C++ / Python разработчик. Computer Vision и системы измерений.", lang } = Astro.props;
+const { title, description, lang } = Astro.props;
 
 // Определяем язык страницы по её пути: всё под /en/ — английская версия.
 // Можно переопределить явным props lang.
 const pathname = Astro.url.pathname;
 const isEn = lang ? lang === "en" : (pathname === "/en" || pathname.startsWith("/en/"));
 const currentLang = isEn ? "en" : "ru";
+
+// Дефолтный description зависит от языка — иначе на английских страницах,
+// которые не передали свой description, в <head> попадал бы русский текст.
+const metaDescription = description ?? (isEn
+  ? "Dmitry Gladkikh — C++ / Python developer. Computer Vision and measurement systems."
+  : "Дмитрий Гладких — C++ / Python разработчик. Computer Vision и системы измерений.");
+
+// Open Graph / Twitter Card. Абсолютный URL строим из Astro.site (домен из
+// astro.config.mjs) и текущего пути. og:image своя для каждого языка.
+const ogUrl = new URL(pathname, Astro.site).href;
+const ogImage = isEn
+  ? "https://gladkih.xyz/og-image-en.png"
+  : "https://gladkih.xyz/og-image.png";
 
 // Префикс для внутренних ссылок: на английской версии все ссылки в хедере
 // должны вести на /en/..., иначе клик по логотипу/меню уводит на русскую
@@ -73,10 +86,23 @@ const siteName = isEn ? "Dmitry Gladkikh" : "Дмитрий Гладких";
       })();
     </script>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
+    <meta name="description" content={metaDescription} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={ogUrl} />
+    <meta property="og:image" content={ogImage} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={ogImage} />
   </head>
   <body>
     <header class="site-header">
