@@ -35,7 +35,8 @@ const statusLabel = status ? (statusLabels[status]?.[lang] ?? status) : null;
 <article class="project-card">
   <header class="card-header">
     <h3>
-      <a href={projectUrl}>{title}</a>
+      <!-- card-link растягивается на всю карточку (см. стили ниже) -->
+      <a href={projectUrl} class="card-link">{title}</a>
     </h3>
     {statusLabel && <span class={`status status-${status}`}>{statusLabel}</span>}
   </header>
@@ -61,6 +62,8 @@ const statusLabel = status ? (statusLabels[status]?.[lang] ?? status) : null;
   /* Стили компонента изолированы — Astro добавляет уникальные классы автоматически */
 
   .project-card {
+    /* position: relative — точка отсчёта для растянутой ссылки (см. .card-link::after) */
+    position: relative;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     border-radius: 8px;
@@ -69,6 +72,16 @@ const statusLabel = status ? (statusLabels[status]?.[lang] ?? status) : null;
     height: 100%;
     display: flex;
     flex-direction: column;
+  }
+
+  /* Приём "stretched link": псевдоэлемент ссылки заголовка накрывает всю
+     карточку, поэтому клик в любом месте открывает страницу проекта.
+     Обернуть карточку в <a> нельзя — внутри есть свои ссылки (GitHub/Live),
+     а вложенные <a> в HTML запрещены. */
+  .card-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
   }
 
   .project-card:hover {
@@ -140,5 +153,14 @@ const statusLabel = status ? (statusLabels[status]?.[lang] ?? status) : null;
     display: flex;
     gap: 1rem;
     font-size: 0.9rem;
+  }
+
+  /* Ссылки внутри карточки поднимаем над растянутой ссылкой: внешние (GitHub/Live) —
+     чтобы клик по ним не перехватывал псевдоэлемент, "Подробнее" — чтобы работал
+     её собственный hover (ведёт туда же, куда и карточка) */
+  .link-external,
+  .link-primary {
+    position: relative;
+    z-index: 1;
   }
 </style>

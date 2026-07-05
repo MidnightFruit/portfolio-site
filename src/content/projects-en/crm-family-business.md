@@ -16,18 +16,18 @@ Until recently, customer and financial records were either not kept at all or jo
 
 ## What I Did
 
-- [x] Designed and built the backend in Django with PostgreSQL
-- [x] Set up a production environment on a rented VPS: nginx, HTTPS via Let's Encrypt
-- [x] Configured a CI/CD pipeline through my home GitLab Runner: push to master → automatic build and deploy
-- [x] Registered and connected a custom domain
+- Designed and built the backend in Django with PostgreSQL
+- Set up a production environment on a rented VPS: nginx, HTTPS via Let's Encrypt
+- Configured a CI/CD pipeline through my home GitLab Runner: push to master → automatic build and deploy
+- Registered and connected a custom domain
 
-## In Progress 
+## In Progress
 
-- [ ] Finance functionality
-- [ ] Task-tracking system
-- [ ] Charts
-- [ ] Report-generation system
-- [ ] Drawing storage system
+- Finance functionality
+- Task-tracking system
+- Charts
+- Report-generation system
+- Drawing storage system
 
 Right now I'm refining the functionality based on feedback from the first real user.
 This is a different experience compared to my work projects: direct contact with the client, vague requirements, tasks I have to define myself - and on top of that, anticipating what the user will actually need.

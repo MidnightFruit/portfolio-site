@@ -1,0 +1,71 @@
+---
+// src/pages/404.astro
+//
+// СТРАНИЦА 404.
+//
+// Astro собирает её в dist/404.html. Страница одна на весь сайт и генерируется
+// один раз при сборке, поэтому язык по URL определить нельзя (URL может быть
+// любым) — текст даём на обоих языках.
+//
+// ВАЖНО ДЛЯ ДЕПЛОЯ: чтобы nginx отдавал её на несуществующих адресах,
+// в конфиге сервера должно быть: error_page 404 /404.html;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="404 - страница не найдена"
+  description="Страница не найдена / Page not found"
+>
+  <section class="not-found">
+    <div class="container">
+      <p class="code">404</p>
+      <h1>Страница не найдена</h1>
+      <p class="dim">
+        Такой страницы нет - возможно, ссылка устарела или в адресе опечатка.
+      </p>
+      <p class="dim">
+        Page not found - the link may be outdated or the address mistyped.
+      </p>
+      <div class="actions">
+        <a href="/" class="btn btn-primary">На главную</a>
+        <a href="/projects/" class="btn btn-secondary">Проекты</a>
+        <a href="/en/" class="btn btn-secondary">Home (EN)</a>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .not-found {
+      padding: 6rem 0;
+      text-align: center;
+    }
+
+    .code {
+      font-family: var(--font-mono);
+      font-size: 5rem;
+      font-weight: 600;
+      color: var(--color-accent);
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .not-found h1 {
+      margin-bottom: 1rem;
+    }
+
+    .dim {
+      color: var(--color-text-dim);
+      max-width: 480px;
+      margin: 0 auto 0.5rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+  </style>
+</BaseLayout>

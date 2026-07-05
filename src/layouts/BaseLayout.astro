@@ -33,12 +33,23 @@ const currentLang = isEn ? "en" : "ru";
 // Дефолтный description зависит от языка — иначе на английских страницах,
 // которые не передали свой description, в <head> попадал бы русский текст.
 const metaDescription = description ?? (isEn
-  ? "Dmitry Gladkikh — C++ / Python developer. Computer Vision and measurement systems."
+  ? "Dmitry Gladkih — C++ / Python developer. Computer Vision and measurement systems."
   : "Дмитрий Гладких — C++ / Python разработчик. Computer Vision и системы измерений.");
 
 // Open Graph / Twitter Card. Абсолютный URL строим из Astro.site (домен из
 // astro.config.mjs) и текущего пути. og:image своя для каждого языка.
 const ogUrl = new URL(pathname, Astro.site).href;
+
+// hreflang: связываем языковые версии одной страницы. Пути зеркальны
+// (/projects/x/ ↔ /en/projects/x/), поэтому пару можно вычислить из pathname.
+// Без этих ссылок поисковик видит RU- и EN-страницы как независимые документы
+// с похожей структурой и сам решает, какую показывать — часто не ту.
+// x-default указывает на EN: авторедирект уводит все не-русские браузеры на /en/.
+const rootPath = isEn
+  ? (pathname === "/en" || pathname === "/en/" ? "/" : pathname.slice(3))
+  : pathname;
+const ruUrl = new URL(rootPath, Astro.site).href;
+const enUrl = new URL(rootPath === "/" ? "/en/" : `/en${rootPath}`, Astro.site).href;
 const ogImage = isEn
   ? "https://gladkih.xyz/og-image-en.png"
   : "https://gladkih.xyz/og-image.png";
@@ -54,7 +65,7 @@ const nav = isEn
   : { home: "Главная", projects: "Проекты", about: "Обо мне" };
 
 // Имя в логотипе — на текущем языке (на английской версии транслитерация).
-const siteName = isEn ? "Dmitry Gladkikh" : "Дмитрий Гладких";
+const siteName = isEn ? "Dmitry Gladkih" : "Дмитрий Гладких";
 ---
 
 <!doctype html>
@@ -91,10 +102,17 @@ const siteName = isEn ? "Dmitry Gladkikh" : "Дмитрий Гладких";
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
 
+    <!-- Канонический адрес и связь языковых версий (см. комментарий выше) -->
+    <link rel="canonical" href={ogUrl} />
+    <link rel="alternate" hreflang="ru" href={ruUrl} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
+
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={metaDescription} />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content={isEn ? "en_US" : "ru_RU"} />
     <meta property="og:url" content={ogUrl} />
     <meta property="og:image" content={ogImage} />
 
