@@ -1,0 +1,38 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#161b22"/>
+    </linearGradient>
+    <linearGradient id="accentline" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#58a6ff"/>
+      <stop offset="100%" stop-color="#1f6feb"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <g fill="#21262d" opacity="0.5">
+    <circle cx="1050" cy="80" r="3"/>
+    <circle cx="1100" cy="80" r="3"/>
+    <circle cx="1150" cy="80" r="3"/>
+    <circle cx="1050" cy="130" r="3"/>
+    <circle cx="1100" cy="130" r="3"/>
+    <circle cx="1150" cy="130" r="3"/>
+    <circle cx="1050" cy="180" r="3"/>
+    <circle cx="1100" cy="180" r="3"/>
+    <circle cx="1150" cy="180" r="3"/>
+  </g>
+
+  <rect x="0" y="0" width="10" height="630" fill="url(#accentline)"/>
+
+  <text x="90" y="270" font-family="Arial, sans-serif" font-size="82" font-weight="700" fill="#f0f6fc">Dmitry Gladkih</text>
+
+  <text x="92" y="340" font-family="'Courier New', monospace" font-size="34" font-weight="700" fill="#58a6ff">C++ / Python developer</text>
+
+  <text x="92" y="392" font-family="Arial, sans-serif" font-size="30" fill="#8b949e">Computer Vision · Measurement Systems · Backend</text>
+
+  <rect x="92" y="440" width="120" height="4" fill="#30363d"/>
+
+  <text x="92" y="510" font-family="'Courier New', monospace" font-size="32" font-weight="700" fill="#c9d1d9">gladkih.xyz</text>
+</svg>
