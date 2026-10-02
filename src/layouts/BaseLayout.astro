@@ -33,7 +33,7 @@ const currentLang = isEn ? "en" : "ru";
 // Дефолтный description зависит от языка — иначе на английских страницах,
 // которые не передали свой description, в <head> попадал бы русский текст.
 const metaDescription = description ?? (isEn
-  ? "Dmitry Gladkih — C++ / Python developer. Computer Vision and measurement systems."
+  ? "Dmitrii Gladkikh — C++ / Python developer. Computer Vision and measurement systems."
   : "Дмитрий Гладких — C++ / Python разработчик. Computer Vision и системы измерений.");
 
 // Open Graph / Twitter Card. Абсолютный URL строим из Astro.site (домен из
@@ -65,7 +65,7 @@ const nav = isEn
   : { home: "Главная", projects: "Проекты", about: "Обо мне" };
 
 // Имя в логотипе — на текущем языке (на английской версии транслитерация).
-const siteName = isEn ? "Dmitry Gladkih" : "Дмитрий Гладких";
+const siteName = isEn ? "Dmitrii Gladkikh" : "Дмитрий Гладких";
 ---
 
 <!doctype html>
